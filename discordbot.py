@@ -41,7 +41,7 @@ async def check_container_status():
 
 @tasks.loop(seconds=1)
 async def check_login_status():
-    MC_LOG="/var/lib/docker/containers/${CONTAINER_ID}/${CONTAINER_ID}-json.log"
+    MC_LOG = f"/var/lib/docker/containers/{CONTAINER_ID}/{CONTAINER_ID}-json.log"
     container = docker_client.containers.get(CONTAINER_ID)
     log_cmd = f"tail -n 1 {MC_LOG} | awk -F'[:,]' '{{print $5,$6}}' | awk -F'[]]' '{{print $2}}'"
     _, output = container.exec_run(log_cmd)
