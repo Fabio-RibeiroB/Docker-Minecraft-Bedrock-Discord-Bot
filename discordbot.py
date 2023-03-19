@@ -17,7 +17,7 @@ CONTAINER_ID = bot_config.CONTAINER_ID
 intents = discord.Intents.all()
 intents.members = True
 
-client = commands.Bot(command_prefix = "!bds", intents = intents)
+client = commands.Bot(command_prefix = "!bds ", intents = intents)
 
 docker_client = docker.from_env()
 
@@ -40,19 +40,6 @@ async def check_container_status():
         message = f"Bedrock server is down."
         await send_discord_message(CHANNEL_ID, message)
 
-#async def check_login_status():
-#    MC_LOG = f"/var/lib/docker/containers/{CONTAINER_ID}/{CONTAINER_ID}-json.log"
-#    container = docker_client.containers.get(CONTAINER_ID)
-#    log_cmd = f"tail -n 1 {MC_LOG} | awk -F'[:,]' '{{print $5,$6}}' | awk -F'[]]' '{{print $2}}'"
-#    _, output = container.exec_run(log_cmd)
-#    data = output.decode().strip()
-#    if data:
-#        await send_discord_message(CHANNEL_ID, data)
-
-#    subprocess.call("./login_check.sh")
-#    if os.stat("./login_check_result").st_size != 0:
-#        with open("./login_check_result", 'r') as f:
-#            data = f.readline()
 @client.command()
 async def status(ctx):
     container_status = get_container_status(CONTAINER_ID)
@@ -60,9 +47,8 @@ async def status(ctx):
     await ctx.send(message)
 
 @tasks.loop(seconds=5)
-async def loop():
+async def login_check_loop():
     subprocess.call("./login_check.sh")
-
     if os.stat("./login_check_result").st_size != 0:
         f = open("./login_check_result", 'r')
         data = f.readline()
@@ -74,13 +60,9 @@ async def loop():
 @client.event
 async def on_ready():
 	check_container_status.start()
-	loop.start()
+	login_check_loop.start()
 	print('Logged in done. Bot is ready...')
 
 
-# client.run(TOKEN)
+client.run(TOKEN)
 
-if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.create_task(client.start(TOKEN))
-    loop.run_forever()

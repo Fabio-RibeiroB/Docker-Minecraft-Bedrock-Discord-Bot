@@ -5,7 +5,7 @@
 
 source ./bot_config.py
 
-MC_LOG="/var/lib/docker/containers/${CONTAINER_ID}/${CONTAINER_ID}-json.log"
+MC_LOG="/var/lib/docker/containers/${CONTAINER_ID}*/*-json.log"
 
 LOG_FILE="./discordbot.log"
 LOG_BAK_FILE="./discordbot_bak.log"
