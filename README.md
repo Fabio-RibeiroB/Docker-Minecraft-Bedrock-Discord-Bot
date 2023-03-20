@@ -2,6 +2,10 @@
 
 Discord bot plugin for [Minecraft bedrock edition on Docker](https://github.com/itzg/docker-minecraft-bedrock-server)
 
+Fabio-RibeiroB's edit: Work in progress. Containerising the bot to read from logs in shared volume as bedrock server and send messages to discord. 
+
+Note to self: solve file not found issues.
+
 ## Overview
 
 I built a Minecraft bedrock edition server with Docker, but there was no proper plugin for that environment, so I created a Bot plugin for Discord. It currently supports the following features.
