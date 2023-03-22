@@ -7,17 +7,14 @@
 
 source ./bot_config.py
 
-#MC_LOG="/var/lib/docker/containers/${CONTAINER_ID}*/*-json.log"
-MC_LOG="/data/log.txt"
+MC_LOG="/var/lib/docker/containers/${CONTAINER_ID}*/*-json.log"
 
 LOG_FILE="./discordbot.log"
 LOG_BAK_FILE="./discordbot_bak.log"
 OUTPUT_FILE="./login_check_result"
 
-cat $MC_LOG > $LOG_BAK_FILE
-cat $MC_LOG > $OUTPUT_FILE
 
-'''
+
 sudo tail -n 1 $MC_LOG > $LOG_FILE
 diff_result=`diff $LOG_FILE $LOG_BAK_FILE`
 
@@ -32,4 +29,4 @@ if [ -n "$diff_result" ]; then
 else
   rm $OUTPUT_FILE && touch $OUTPUT_FILE
 fi
-'''
+

@@ -1,6 +1,4 @@
-# Created by Koutyan.S (https://tech.kosukelab.com/)
-# This is main program.
-
+#!/home/fabio/.venv/bedrock/bin/python3
 import discord
 from discord.ext import tasks, commands
 import asyncio
@@ -46,7 +44,7 @@ async def status(ctx):
     message = f"The Bedrock server is currently {container_status}."
     await ctx.send(message)
 
-@tasks.loop(seconds=5)
+@tasks.loop(seconds=1)
 async def login_check_loop():
     subprocess.call("./login_check.sh")
     if os.stat("./login_check_result").st_size != 0:
@@ -62,7 +60,6 @@ async def on_ready():
 	check_container_status.start()
 	login_check_loop.start()
 	print('Logged in done. Bot is ready...')
-
 
 client.run(TOKEN)
 
